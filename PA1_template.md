@@ -183,28 +183,13 @@ message("Number of rows with missing data: ", incompleteRowCount)
 
 There's no perfect way to deal with this.
 
-**I chose to use the mean values for each 5-minute interval (not including the NA values).**
+**My strategy was to replace the NA values with the mean values for each 5-minute interval. **
 
 Extracting this data:
 
 ```r
 intervalMeans = aggregate(x = activityDataComplete$steps, by = list(activityDataComplete$interval), FUN = mean)
 colnames(intervalMeans) = c("interval", "meanVal")
-intervalMeans[1:10,]
-```
-
-```
-##    interval meanVal
-## 1         0 1.71698
-## 2         5 0.33962
-## 3        10 0.13208
-## 4        15 0.15094
-## 5        20 0.07547
-## 6        25 2.09434
-## 7        30 0.52830
-## 8        35 0.86792
-## 9        40 0.00000
-## 10       45 1.47170
 ```
 
 **Create a new dataset that is equal to the original dataset but with the missing data filled in:**
@@ -255,7 +240,7 @@ These values are almost identical to the first mean and median. In this case, th
 **This code creates a panel plot containing a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).:**
 
 ```r
-xyplot(steps~interval|dayType,
+xyplot(steps ~ interval | dayType,
         data=stepAverages,
         main="Average Daily Activity Pattern, Weekdays vs Weekend (Interpolated Data)",
         type="a",
