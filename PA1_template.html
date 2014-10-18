@@ -92,7 +92,7 @@ message(&quot;Number of days with partially-complete 'steps' values: &quot;,
 ## Number of days with completely missing 'steps' values: 8</code></pre>
 <p>All the NA values are accounted for by 8 days for which we have no data - all other days are complete.</p>
 <p><strong>The following section of code processes the data to a more useful form.</strong></p>
-<p>Converting the “date” and “interval” fields to a real date value:</p>
+<p>Converting the “date” and “interval” fields to a real date value. This let’s us calculate weekday/weekend values:</p>
 <pre class="r"><code>activityData$dateTime = paste(activityData[,2],
                               floor(activityData$interval / 100),
                               activityData$interval %% 100,
@@ -100,7 +100,8 @@ message(&quot;Number of days with partially-complete 'steps' values: &quot;,
 activityData$dateTime = strptime(activityData$dateTime, &quot;%Y-%m-%d-%H-%M&quot;)</code></pre>
 <p>This code marks the rows by weekday/weekend:</p>
 <pre class="r"><code>activityData$dayType = ifelse(weekdays(activityData$dateTime) %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;), &quot;weekend&quot;,&quot;weekday&quot;)
-activityData$dayType = factor(activityData$dayType)</code></pre>
+activityData$dayType = factor(activityData$dayType)
+activityData$dateTime = NULL</code></pre>
 </div>
 <div id="what-is-mean-total-number-of-steps-taken-per-day" class="section level2">
 <h2>What is mean total number of steps taken per day?</h2>
@@ -188,8 +189,7 @@ patchedActivityData$steps = ifelse(is.na(patchedActivityData$steps),
                             patchedActivityData$steps)</code></pre>
 <p>And we aggregate the step totals:</p>
 <pre class="r"><code>dailyStepTotals = aggregate(x = patchedActivityData$steps, by = list(patchedActivityData$date), FUN = sum)
-colnames(dailyStepTotals) = c(&quot;Date&quot;, &quot;TotalSteps&quot;)
-dailyStepTotals$Date = strptime(dailyStepTotals$Date, &quot;%Y-%m-%d&quot;)</code></pre>
+colnames(dailyStepTotals) = c(&quot;Date&quot;, &quot;TotalSteps&quot;)</code></pre>
 <p><strong>This code plots a histogram of total steps-per-day with the interpolated data:</strong></p>
 <pre class="r"><code>ggplot(data=dailyStepTotals, aes(x=TotalSteps)) +
     ggtitle(&quot;Total Steps per Day (Interpolated Data)&quot;) +

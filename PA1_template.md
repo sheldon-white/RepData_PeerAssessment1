@@ -57,7 +57,7 @@ All the NA values are accounted for by 8 days for which we have no data - all ot
 
 **The following section of code processes the data to a more useful form.**
 
-Converting the "date" and "interval" fields to a real date value:
+Converting the "date" and "interval" fields to a real date value. This let's us calculate weekday/weekend values:
 
 ```r
 activityData$dateTime = paste(activityData[,2],
@@ -71,6 +71,7 @@ This code marks the rows by weekday/weekend:
 ```r
 activityData$dayType = ifelse(weekdays(activityData$dateTime) %in% c("Saturday", "Sunday"), "weekend","weekday")
 activityData$dayType = factor(activityData$dayType)
+activityData$dateTime = NULL
 ```
 
 ## What is mean total number of steps taken per day?
@@ -220,7 +221,6 @@ And we aggregate the step totals:
 ```r
 dailyStepTotals = aggregate(x = patchedActivityData$steps, by = list(patchedActivityData$date), FUN = sum)
 colnames(dailyStepTotals) = c("Date", "TotalSteps")
-dailyStepTotals$Date = strptime(dailyStepTotals$Date, "%Y-%m-%d")
 ```
 
 **This code plots a histogram of total steps-per-day with the interpolated data:**
