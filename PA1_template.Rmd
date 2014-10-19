@@ -38,7 +38,7 @@ All the NA values are accounted for by 8 days for which we have no data - all ot
 
 **The following section of code processes the data to a more useful form.**
 
-Converting the "date" and "interval" fields to a real date value. This let's us calculate weekday/weekend values:
+Converting the "date" and "interval" fields to a real date value, which allows calculation of  weekday/weekend values:
 ```{r dateconversion}
 activityData$dateTime = paste(activityData[,2],
                               floor(activityData$interval / 100),
@@ -95,10 +95,6 @@ stepAverages$dayType = factor(stepAverages$dayType)
 colnames(stepAverages) = c("interval", "steps", "dayType")
 ```
 
-Here's what the resulting data looks like:
-```{r}
-head(stepAverages)
-```
 **This code makes a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis):**
 
 ```{r timeseriesplot1}

@@ -127,21 +127,6 @@ stepAverages$dayType = factor(stepAverages$dayType)
 colnames(stepAverages) = c("interval", "steps", "dayType")
 ```
 
-Here's what the resulting data looks like:
-
-```r
-head(stepAverages)
-```
-
-```
-##   interval  steps dayType
-## 1        0 2.3333 weekday
-## 2        5 0.4615 weekday
-## 3       10 0.1795 weekday
-## 4       15 0.2051 weekday
-## 5       20 0.1026 weekday
-## 6       25 1.5128 weekday
-```
 **This code makes a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis):**
 
 
